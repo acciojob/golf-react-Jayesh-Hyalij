@@ -20,17 +20,20 @@ class App extends Component {
     document.addEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown(event) {
-    if (event.key === 'ArrowRight' || event.keyCode === 39) {
-      this.setState(prevState => ({
-        posi: prevState.posi + 5
-      }), () => {
-        this.setState({
-          ballPosition: { left: `${this.state.posi}px` }
-        });
+handleKeyDown(event) {
+  if (event.key === 'ArrowRight' || event.keyCode === 39) {
+    this.setState(prevState => ({
+      posi: prevState.posi + 5
+    }), () => {
+      this.setState({
+        ballPosition: { left: `${this.state.posi}px` }
       });
-    }
+    });
+    const ball = document.querySelector('.ball');
+    const currentLeft = parseInt(ball.style.left, 10);
+    expect(currentLeft).to.equal(this.state.posi);
   }
+}
 
   renderBallOrButton() {
     if (this.state.renderBall) {
@@ -40,17 +43,22 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
+ componentDidMount() {
+  if (this.state.renderBall) {
     document.addEventListener('keydown', this.handleKeyDown);
   }
+}
 
-  render() {
-    return (
-      <div className="playground">
-        {this.renderBallOrButton()}
+ render() {
+  return (
+    <div className="playground">
+      <div className="start-button-container">
+        {!this.state.renderBall && <button onClick={this.buttonClickHandler}>Start</button>}
       </div>
-    )
-  }
+      {this.renderBallOrButton()}
+    </div>
+  );
+}
 }
 
 
